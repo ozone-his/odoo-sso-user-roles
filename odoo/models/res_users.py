@@ -13,10 +13,7 @@ class CustomUser(models.Model):
     @api.model
     def auth_oauth(self, provider, params):
         credentials = super().auth_oauth(provider, params)
-        _logger.info('Credentials %s', credentials)
-        user = self.search([("login", "=", credentials[0]), ('oauth_access_token', '=', params['access_token'])])
-        _logger.info('User %s', user)
-        # user = self.search([("oauth_uid", "=", oauth_uid), ('oauth_provider_id', '=', provider)])
+        user = self.search([("login", "=", credentials[1]), ('oauth_access_token', '=', params['access_token'])])
         claims = jwt.get_unverified_claims(params['access_token'])
         odoo_access = claims['resource_access'].get('odoo')
         if odoo_access and odoo_access.get('roles'):
@@ -24,12 +21,14 @@ class CustomUser(models.Model):
             _logger.info('Odoo Roles %s', odoo_roles)
             group_ids = []
             for r in odoo_roles:
-                group_id = self.env["res.groups"].search([("name", "=", r)])
-                if group_id:
-                    group_ids.append(group_id)
+                group_id = self.env["res.groups"].search([("full_name", "=", r)])
+                if group_id.id:
+                    group_ids.append(group_id.id)
+                else:
+                    _logger.warning('No group found with full_name %s', r)
             _logger.info('Group Ids %s', group_ids)
             user.write({'groups_id': [(6, 0, group_ids)]})
         else:
-            _logger.info('No Odoo roles defined in Keycloak')
+            _logger.debug('User has no roles defined in Keycloak')
 
         return credentials
