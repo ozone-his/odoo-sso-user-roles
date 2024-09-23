@@ -18,17 +18,13 @@ class CustomUser(models.Model):
         odoo_access = claims['resource_access'].get('odoo')
         if odoo_access and odoo_access.get('roles'):
             odoo_roles = odoo_access.get('roles')
-            _logger.info('Odoo Roles %s', odoo_roles)
             group_ids = []
             for r in odoo_roles:
                 group_id = self.env["res.groups"].search([("full_name", "=", r)])
                 if group_id.id:
                     group_ids.append(group_id.id)
                 else:
-                    _logger.warning('No group found with full_name %s', r)
-            _logger.info('Group Ids %s', group_ids)
+                    _logger.warning('No group found with full name %s', r)
             user.write({'groups_id': [(6, 0, group_ids)]})
-        else:
-            _logger.debug('User has no roles defined in Keycloak')
 
         return credentials
