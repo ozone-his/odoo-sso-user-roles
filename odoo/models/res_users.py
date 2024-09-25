@@ -13,6 +13,10 @@ class CustomUser(models.Model):
     @api.model
     def auth_oauth(self, provider, params):
         credentials = super().auth_oauth(provider, params)
+        self.assign_roles(credentials, params)
+        return credentials
+
+    def assign_roles(self, credentials, params):
         user = self.search([("login", "=", credentials[1]), ('oauth_access_token', '=', params['access_token'])])
         claims = jwt.get_unverified_claims(params['access_token'])
         odoo_access = claims['resource_access'].get('odoo')
@@ -26,5 +30,3 @@ class CustomUser(models.Model):
                 else:
                     _logger.warning('No group found with full name %s', r)
             user.write({'groups_id': [(6, 0, group_ids)]})
-
-        return credentials
