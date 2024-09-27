@@ -8,7 +8,7 @@
         <artifactId>ozone-auth-roles</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>odoo-addon-roles</artifactId>
+    <artifactId>ozone_roles</artifactId>
     <packaging>pom</packaging>
     <name>Odoo Addon Roles</name>
     <description>
