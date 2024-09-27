@@ -3,9 +3,8 @@ import logging
 
 from jose import jwt
 from odoo.addons.website.tools import MockRequest
-from odoo.tools.misc import DotDict
-
 from odoo.tests import common
+from odoo.tools.misc import DotDict
 
 CLIENT_ID = "auth_oidc-test"
 
@@ -63,3 +62,23 @@ class TestOpenIDRoleAssignment(common.HttpCase):
             user.assign_roles(credentials, params)
             self.assertTrue(group_id_1 in user.groups_id)
             self.assertTrue(group_id_2 in user.groups_id)
+
+    def test_oidc_role_revoke_all(self):
+        """Test that all user roles are revoked if none are defined for the user"""
+        claims = {
+            "resource_access": {
+                "openmrs": {
+                    "roles": [
+                        "admin",
+                    ]
+                }
+            }
+        }
+        token = jwt.encode(claims, 'test', algorithm='HS256')
+        user = self._prepare_login_test_user(self.provider, token)
+        self.assertTrue(len(user.groups_id) > 0)
+        credentials = ('', user.login, '')
+        params = {'access_token': token}
+        with create_request(self.env, user.id):
+            user.assign_roles(credentials, params)
+            self.assertEqual(0, len(user.groups_id))

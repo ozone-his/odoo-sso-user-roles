@@ -1,7 +1,6 @@
 import logging
 
 from jose import jwt
-
 from odoo import api, models
 
 _logger = logging.getLogger(__name__)
@@ -30,3 +29,5 @@ class CustomUser(models.Model):
                 else:
                     _logger.warning('No group found with full name %s', r)
             user.write({'groups_id': [(6, 0, group_ids)]})
+        else:
+            user.write({'groups_id': [(6, 0, ())]})
