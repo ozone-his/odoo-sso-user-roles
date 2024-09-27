@@ -30,4 +30,4 @@ class CustomUser(models.Model):
                     _logger.warning('No group found with full name %s', r)
             user.write({'groups_id': [(6, 0, group_ids)]})
         else:
-            user.write({'groups_id': [(6, 0, ())]})
+            user.write({'groups_id': [(5, 0, 0)]})
