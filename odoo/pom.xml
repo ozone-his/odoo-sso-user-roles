@@ -4,15 +4,15 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ozonehis</groupId>
-        <artifactId>ozone-auth-roles</artifactId>
+        <groupId>com.ozonehis.odoo</groupId>
+        <artifactId>ozone-auth-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>ozone_roles</artifactId>
+    <artifactId>ozone-auth-roles</artifactId>
     <packaging>pom</packaging>
-    <name>Odoo Addon Roles</name>
+    <name>Odoo Auth Roles Addon</name>
     <description>
-        Assigns a user roles from the authentication provider upon login
+        Assigns the roles defined in the authentication provider to a user upon login
     </description>
 
     <build>

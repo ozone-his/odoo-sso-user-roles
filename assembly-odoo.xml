@@ -4,8 +4,10 @@
     <formats>
         <format>zip</format>
     </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
+            <outputDirectory>/</outputDirectory>
             <includes>
                 <include>*.py</include>
                 <include>models/*.py</include>

@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ozonehis</groupId>
-    <artifactId>ozone-auth-roles</artifactId>
+    <groupId>com.ozonehis.odoo</groupId>
+    <artifactId>ozone-auth-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
@@ -12,9 +12,9 @@
         <module>odoo</module>
     </modules>
 
-    <name>Ozone Auth Roles</name>
+    <name>Ozone Auth Parent</name>
     <description>
-        Parent project for addons that assigns users roles defined in the authentication provider
+        Parent project for Odoo authorization addons.
     </description>
 
     <organization>
