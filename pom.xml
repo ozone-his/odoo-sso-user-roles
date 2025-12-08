@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ozonehis.odoo</groupId>
-    <artifactId>ozone-auth-parent</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>odoo-sso-user-roles</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-    <modules>
-        <module>odoo</module>
-    </modules>
-
-    <name>Ozone Auth Parent</name>
+    <name>SSO User Roles</name>
     <description>
-        Parent project for Odoo authorization addons.
+        Assigns the roles defined in the authentication provider to a user as groups upon login
     </description>
-
-    <organization>
-        <name>Ozone HIS</name>
-        <url>http://www.ozone-his.com</url>
-    </organization>
-    <developers>
-        <developer>
-            <name>Mekom Solutions</name>
-            <url>http://www.mekomsolutions.com</url>
-        </developer>
-    </developers>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <scm>
         <connection>scm:git:git@github.com:ozone-his/ozone-auth-roles.git</connection>
@@ -39,7 +21,49 @@
         <tag>HEAD</tag>
     </scm>
 
+    <properties>
+        <addonVersion>${project.version}</addonVersion>
+        <odooVersion>17.0</odooVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>Filter resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/${project.artifactId}-${project.version}/</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/</directory>
+                                        <includes>
+                                            <include>*.py</include>
+                                            <include>models/*.py</include>
+                                        </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -56,7 +80,7 @@
                             <configuration>
                                 <appendAssemblyId>false</appendAssemblyId>
                                 <descriptors>
-                                    <descriptor>assembly-odoo.xml</descriptor>
+                                    <descriptor>assembly.xml</descriptor>
                                 </descriptors>
                             </configuration>
                         </execution>
@@ -68,14 +92,14 @@
 
     <distributionManagement>
         <repository>
-            <id>mks-nexus-private-releases</id>
-            <name>Mekom Solutions Nexus repo</name>
-            <url>https://nexus.mekomsolutions.net/repository/maven-private-releases</url>
+            <id>mks-nexus-public-releases</id>
+            <name>Mekom Solutions Nexus repo for releases</name>
+            <url>https://nexus.mekomsolutions.net/repository/maven-releases</url>
         </repository>
         <snapshotRepository>
-            <id>mks-nexus-private-snapshots</id>
+            <id>mks-nexus-public-snapshots</id>
             <name>Mekom Solutions Nexus repo for snapshots</name>
-            <url>https://nexus.mekomsolutions.net/repository/maven-private-snapshots</url>
+            <url>https://nexus.mekomsolutions.net/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
