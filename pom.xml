@@ -15,9 +15,9 @@
     </description>
 
     <scm>
-        <connection>scm:git:git@github.com:ozone-his/ozone-auth-roles.git</connection>
-        <developerConnection>scm:git:git@github.com:ozone-his/ozone-auth-roles.git</developerConnection>
-        <url>https://github.com/ozone-his/ozone-auth-roles.git</url>
+        <connection>scm:git:git@github.com:ozone-his/odoo-sso-user-roles.git</connection>
+        <developerConnection>scm:git:git@github.com:ozone-his/odoo-sso-user-roles.git</developerConnection>
+        <url>https://github.com/ozone-his/odoo-sso-user-roles.git</url>
         <tag>HEAD</tag>
     </scm>
 
