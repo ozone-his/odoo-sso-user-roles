@@ -9,9 +9,9 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>SSO User Roles</name>
+    <name>Odoo SSO User Roles</name>
     <description>
-        Assigns the roles defined in the authentication provider to a user as groups upon login
+        Odoo add-on to assign the roles defined in the authentication provider to a user as groups upon login
     </description>
 
     <scm>
@@ -20,6 +20,17 @@
         <url>https://github.com/ozone-his/ozone-auth-roles.git</url>
         <tag>HEAD</tag>
     </scm>
+
+    <organization>
+        <name>Ozone HIS</name>
+        <url>http://www.ozone-his.com</url>
+    </organization>
+    <developers>
+        <developer>
+            <name>Mekom Solutions</name>
+            <url>http://www.mekomsolutions.com</url>
+        </developer>
+    </developers>
 
     <properties>
         <addonVersion>${project.version}</addonVersion>
@@ -35,7 +46,7 @@
                 <version>3.3.1</version>
                 <executions>
                     <execution>
-                        <id>Filter resources</id>
+                        <id>Substitute addon version with Maven properties</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -61,33 +72,24 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-
+                <version>3.7.1</version>
+                <executions>
+                    <execution>
+                        <id>package-odoo-addon</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.7.1</version>
-                    <executions>
-                        <execution>
-                            <id>package-odoo-addon</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>single</goal>
-                            </goals>
-                            <configuration>
-                                <appendAssemblyId>false</appendAssemblyId>
-                                <descriptors>
-                                    <descriptor>assembly.xml</descriptor>
-                                </descriptors>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 
     <distributionManagement>
