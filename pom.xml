@@ -47,10 +47,10 @@
                             <resources>
                                 <resource>
                                     <directory>${project.basedir}/</directory>
-                                        <includes>
-                                            <include>*.py</include>
-                                            <include>models/*.py</include>
-                                        </includes>
+                                    <includes>
+                                        <include>*.py</include>
+                                        <include>models/*.py</include>
+                                    </includes>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
