@@ -29,6 +29,8 @@ class CustomUser(models.Model):
                 else:
                     _logger.warning('No company found with name %s', n)
 
+        company_ids_op = [(6, 0, company_ids)]
+
         odoo_access = claims['resource_access'].get('odoo')
         if odoo_access and odoo_access.get('roles'):
             odoo_roles = odoo_access.get('roles')
@@ -39,6 +41,6 @@ class CustomUser(models.Model):
                     group_ids.append(group_id.id)
                 else:
                     _logger.warning('No group found with full name %s', r)
-            user.write({'groups_id': [(6, 0, group_ids)], 'company_ids': [(6, 0, company_ids)]})
+            user.write({'groups_id': [(6, 0, group_ids)], 'company_ids': company_ids_op})
         else:
-            user.write({'groups_id': [(5, 0, 0)], 'company_ids': [(6, 0, company_ids)]})
+            user.write({'groups_id': [(5, 0, 0)], 'company_ids': company_ids_op})
