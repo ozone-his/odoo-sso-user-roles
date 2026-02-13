@@ -31,3 +31,17 @@ class CustomUser(models.Model):
             user.write({'groups_id': [(6, 0, group_ids)]})
         else:
             user.write({'groups_id': [(5, 0, 0)]})
+
+        org_names = claims['organizations']
+
+        # Odoo requires the default company to always be in the allowed companies
+        company_ids = [user.company_id.id]
+        if org_names:
+            for n in org_names:
+                company_id = self.env["res.company"].search([("name", "=", n)])
+                if company_id.id:
+                    company_ids.append(company_id.id)
+                else:
+                    _logger.warning('No company found with name %s', n)
+
+        user.write({'company_ids': [(6, 0, company_ids)]})
