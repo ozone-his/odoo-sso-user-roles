@@ -18,6 +18,19 @@ class CustomUser(models.Model):
     def assign_roles(self, credentials, params):
         user = self.search([("login", "=", credentials[1]), ('oauth_access_token', '=', params['access_token'])])
         claims = jwt.get_unverified_claims(params['access_token'])
+        org_names = claims['organizations']
+        # Odoo requires the default company to always be in the allowed companies
+        company_ids = [user.company_id.id]
+        if org_names:
+            for n in org_names:
+                company_id = self.env["res.company"].search([("name", "=", n)])
+                if company_id.id:
+                    company_ids.append(company_id.id)
+                else:
+                    _logger.warning('No company found with name %s', n)
+
+        company_ids_op = [(6, 0, company_ids)]
+
         odoo_access = claims['resource_access'].get('odoo')
         if odoo_access and odoo_access.get('roles'):
             odoo_roles = odoo_access.get('roles')
@@ -28,6 +41,6 @@ class CustomUser(models.Model):
                     group_ids.append(group_id.id)
                 else:
                     _logger.warning('No group found with full name %s', r)
-            user.write({'groups_id': [(6, 0, group_ids)]})
+            user.write({'groups_id': [(6, 0, group_ids)], 'company_ids': company_ids_op})
         else:
-            user.write({'groups_id': [(5, 0, 0)]})
+            user.write({'groups_id': [(5, 0, 0)], 'company_ids': company_ids_op})
