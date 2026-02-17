@@ -18,9 +18,11 @@ class CustomUser(models.Model):
     def assign_roles(self, credentials, params):
         user = self.search([("login", "=", credentials[1]), ('oauth_access_token', '=', params['access_token'])])
         claims = jwt.get_unverified_claims(params['access_token'])
-        org_names = claims['organizations']
         # Odoo requires the default company to always be in the allowed companies
         company_ids = [user.company_id.id]
+
+        # Assign organizations/companies if available in claims
+        org_names = claims.get('organizations', [])
         if org_names:
             for n in org_names:
                 company_id = self.env["res.company"].search([("name", "=", n)])
@@ -31,7 +33,9 @@ class CustomUser(models.Model):
 
         company_ids_op = [(6, 0, company_ids)]
 
-        odoo_access = claims['resource_access'].get('odoo')
+        # Assign roles if available in resource_access
+        resource_access = claims.get('resource_access', {})
+        odoo_access = resource_access.get('odoo')
         if odoo_access and odoo_access.get('roles'):
             odoo_roles = odoo_access.get('roles')
             group_ids = []
