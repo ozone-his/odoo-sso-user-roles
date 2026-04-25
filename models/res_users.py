@@ -40,7 +40,7 @@ class CustomUser(models.Model):
             odoo_roles = odoo_access.get('roles')
             group_ids = []
             for r in odoo_roles:
-                group_id = self.env["res.groups"].search([("full_name", "=", r)])
+                group_id = self.env["res.groups"].with_context(lang='en_US').search([("full_name", "=", r)])
                 if group_id.id:
                     group_ids.append(group_id.id)
                 else:
